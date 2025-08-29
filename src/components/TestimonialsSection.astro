@@ -1,0 +1,82 @@
+---
+import TestimonialCard from "./ui/TestimonialCard.astro";
+import WordColor from "./ui/WordColor.astro";
+
+interface TestimonialsSectionType {
+  title: string;
+  subtitle: string;
+}
+const testimonialsSection: TestimonialsSectionType = {
+  title: 'What people Say',
+  subtitle:
+    'Hear from those who’ve worked with me about the impact of my code and collaboration.',
+};
+
+export interface TestimonialItemType {
+  name: string;
+  avatar: string;
+  role: string;
+  quote: string;
+  rating: number;
+}
+
+const testimonialItems: TestimonialItemType[] = [
+{
+    name: 'Alexander Gutnikov',
+    avatar: 'https://media.licdn.com/dms/image/v2/D4E03AQGKAF3eiYGkRA/profile-displayphoto-shrink_400_400/B4EZQ6xdRTHsAg-/0/1736152831542?e=1759363200&v=beta&t=iC1_qqDHzUsoLmnUsjiowCDXoxFo8tR2vegtEQBaJgQ',
+    role: 'Head of web development at vivid.money',
+    quote: "I had the pleasure of working with Alex on one of the recent projects. He’s a strong, experienced engineer who takes full ownership—able to lead and grow complex initiatives from idea to delivery independently. Alex combines deep technical expertise with creative, non-obvious problem-solving; his communication is excellent—clear, proactive, and empathetic—making collaboration smooth with both technical and non-technical stakeholders. On top of that, he’s simply great to talk to about work and life. I’d gladly work with Alex again and recommend him without hesitation.",
+    rating: 5,
+  },
+  {
+    name: 'Maksim Demidov',
+    avatar: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSp3UjEgjJ9E2v9OxuPDPYQipaWkBEDFUwoW_RZ3j3Boz0pvg',
+    role: 'Senior Test Automation Engineer / SDET',
+    quote:
+      "I had the pleasure of working with Alex, a highly skilled Senior Front-End Engineer. He is experienced in JavaScript, TypeScript, and React, and advanced in leveraging AI models at work. He created from scratch an AI-powered tool that generated front-end code for web forms and pages. Alex is reliable, always ready to help colleagues, and great at sharing knowledge. He is a true team player who can handle technical challenges of any complexity. I strongly recommend him.",
+    rating: 5,
+  },
+  {
+    name: 'Roman Ches',
+    avatar: 'https://media.licdn.com/dms/image/v2/C5603AQG9H1BVlEE4QQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1610189651561?e=1759363200&v=beta&t=oVVm_KjPeDzx2qBTLu9H-40nIfCu5wEBprvuDjc2PsI',
+    role: 'Full Stack Developer at Walmart',
+    quote:
+      "I collaborated and worked with Alexander for a few years. He has an inquisitive mind and a professional approach to programming at the production level. He is always seeking new technologies to architect solutions combined with the best practices for implementing tasks. I appreciated the joint discussions of modern technologies and the demanding style of code review.",
+    rating: 5,
+  },
+  
+  {
+    name: 'Denis Yarkeev',
+    avatar: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+    role: 'Software engineer - Mail.Ru Group',
+    quote:
+      'A cool specialist, ready to solve a problem of any complexity. Responsibility, initiative and professionalism - this is all about Alexander.',
+    rating: 5,
+  },
+];
+---
+
+<section id="reviews" class="py-20 bg-gray-900/50 relative overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6 lg:px-12 relative z-10">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl lg:text-4xl font-bold font-code inline-block relative text-white mb-1">
+        <WordColor text={testimonialsSection.title} wordsPerColor={1} />
+        <div class="absolute -bottom-2 left-0 w-full h-1 bg-green-500 opacity-70"></div>
+      </h2>
+      <p class="text-gray-400 mt-4 max-w-2xl mx-auto">
+        {testimonialsSection.subtitle}
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {testimonialItems.map((testimonial, index) => (
+        <TestimonialCard
+          avatar={testimonial.avatar}
+          name={testimonial.name}
+          role={testimonial.role}
+          quote={testimonial.quote}
+          rating={testimonial.rating}
+          index={index} />
+      ))}
+    </div>
+  </div>
+</section>

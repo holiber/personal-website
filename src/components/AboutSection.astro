@@ -1,0 +1,104 @@
+---
+import WordColor from './ui/WordColor.astro';
+import GithubCard from './ui/GithubCard.astro';
+import AboutCard from './ui/AboutCard.astro';
+import SkillCard from './ui/SkillCard.astro';
+
+export interface AboutContentType {
+  name: string;
+  jobTitle: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  github: {
+    username: string;
+    avatar: string;
+    url: string;
+  };
+  stats: { label: string; value: number; suffix: string }[];
+  skills: { name: string; percentage: number }[];
+  technologies: string[];
+  cta: { text: string; href: string; icon: string; count: number };
+}
+
+const aboutContent: AboutContentType = {
+  name: 'Alex Nazarov',
+  jobTitle: 'Full-Stack Developer & Open Source Enthusiast',
+  title: 'About Me',
+  subtitle: 'Passionate developer with a love for clean code, strong coffee, and open source contributions.',
+  description: `Experienced and versatile Senior Software Engineer with over 15 years in the software industry, ranging from dynamic startups to global IT corporations. Proven ability to deliver high-impact applications with modern front-end and back-end technologies, including large-scale streaming platforms and AI-enhanced tools. Skilled in performance optimization, cross-platform integration, and full-cycle development.`,
+  github: {
+    username: 'https://github.com/holiber',
+    avatar: '/img/avatar.jpg',
+    url: 'https://github.com/holiber',
+  },
+  stats: [
+    { label: 'Repositories', value: 152, suffix: '' },
+    { label: 'Commits', value: 42, suffix: 'K' },
+    { label: 'PRs Merged', value: 87, suffix: '' },
+  ],
+  skills: [
+    { name: 'Frontend', percentage: 90 },
+    { name: 'Backend', percentage: 85 },
+    { name: 'DevOps', percentage: 75 },
+    { name: 'Mobile', percentage: 65 },
+  ],
+  technologies: [
+    'JavaScript',
+    'React',
+    'Node.js',
+    'TypeScript',
+    'TailwindCSS',
+    'Python',
+    'Docker',
+    'Git',
+  ],
+  cta: {
+    text: 'Fork My Portfolio',
+    href: '#',
+    icon: 'fas fa-code-branch',
+    count: 14,
+  },
+};
+---
+
+<section id="about" class="py-20 lg:px-8 bg-gray-900/50 relative overflow-hidden">
+  <!-- Background Elements: GitHub-style Dots -->
+  <div class="absolute inset-0 overflow-hidden opacity-10 pointer-events-none">
+    <div class="absolute top-40 right-28 lg:right-40 size-48">
+      <div class="w-full h-full grid grid-cols-10 gap-2">
+        <template x-for="i in 100">
+          <div class="w-2 h-2 rounded-full bg-gray-400"></div>
+        </template>
+      </div>
+    </div>
+    <div class="absolute bottom-24 left-28 lg:left-40 size-48">
+      <div class="w-full h-full grid grid-cols-10 gap-2">
+        <template x-for="i in 100">
+          <div class="w-2 h-2 rounded-full bg-gray-400"></div>
+        </template>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-6xl mx-auto px-6 lg:px-12 relative z-10">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl lg:text-4xl font-bold font-code inline-block relative text-white mb-1">
+        <WordColor text={aboutContent.title} wordsPerColor={1} />
+        <div class="absolute -bottom-2 left-0 w-full h-1 bg-green-500 opacity-70"></div>
+      </h2>
+      <p class="text-gray-400 mt-4 max-w-2xl mx-auto">{aboutContent.subtitle}</p>
+    </div>
+    <div class="relative lg:max-w-5xl mx-auto lg:px-12">
+      <GithubCard
+        github={aboutContent.github}
+        cta={aboutContent.cta}
+        name={aboutContent.name}
+        jobTitle={aboutContent.jobTitle}
+      />
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <AboutCard description={aboutContent.description} stats={aboutContent.stats} />
+        <SkillCard skills={aboutContent.skills} technologies={aboutContent.technologies} />
+      </div>
+    </div>
+  </div>
+</section>
