@@ -46,6 +46,22 @@ export const projectItems: ProjectItemType[] = [
       ],
       icon: 'fas fa-bug',
     },
+
+    {
+      title: 'React AI Forms',
+      slug: 'react-ai-forms',
+      description:
+        'AI-powered form generation system built with React, featuring dynamic form creation and intelligent field validation.',
+      content: 'A sophisticated React application that leverages AI to generate dynamic forms with intelligent validation. Features include automatic form field generation, real-time validation, dynamic form schemas, and seamless integration with modern React patterns. Built with TypeScript for type safety and includes advanced form handling capabilities with uniforms-antd integration.',
+      image: '/img/project-react-ai-forms/image.png',
+      gallery: ['/img/project-react-ai-forms/image.png', '/img/project-react-ai-forms/image.png', '/img/project-react-ai-forms/image.png'],
+      tags: ['React', 'TypeScript', 'AI', 'Forms'],
+      links: [
+        { icon: 'fab fa-github', href: 'https://github.com/holiber/react-ai-forms' },
+        { icon: 'fas fa-external-link-alt', href: 'https://holiber.github.io/react-ai-forms/' },
+      ],
+      icon: 'fas fa-robot',
+    },
     {
       title: 'Tetris JS',
       slug: 'tetris-js',
@@ -150,5 +166,20 @@ export const projectItems: ProjectItemType[] = [
         { icon: 'fas fa-external-link-alt', href: 'https://holiber.github.io/minesweeper-phaser/' },
       ],
       icon: 'fas fa-chart-camera',
+    },
+    {
+      title: 'Mail.Ru Document Editor',
+      slug: 'mailru-docs',
+      description:
+        'Online document editor integrated into Mail.Ru Cloud, enabling users to create and edit documents directly in the browser.',
+      content: 'A comprehensive online document editing platform integrated into Mail.Ru Cloud storage service. Features include real-time document editing, collaborative editing capabilities, cloud storage integration, and seamless browser-based document management. Users can create new documents and edit existing ones without downloading files, with full integration into the Mail.Ru ecosystem including cloud storage, email, and productivity tools.',
+      image: '/img/project-mailru-docs/image.png',
+      gallery: ['/img/project-mailru-docs/image.png', '/img/project-mailru-docs/image.png', '/img/project-mailru-docs/image.png'],
+      tags: ['Mail.Ru', 'Document Editor', 'Cloud Storage', 'Web Application', 'Productivity'],
+      links: [
+        { icon: 'fab fa-github', href: 'https://github.com/holiber/mailru-docs' },
+        { icon: 'fas fa-external-link-alt', href: 'https://docs.mail.ru/' },
+      ],
+      icon: 'fas fa-file-alt',
     },
   ];
