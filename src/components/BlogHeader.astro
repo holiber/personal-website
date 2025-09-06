@@ -3,8 +3,8 @@ import WordColor from './ui/WordColor.astro';
 
 interface Props {
   title: string;
-  date: string;
-  readTime: string;
+  date?: string;
+  readTime?: string;
 }
 
 const { title, date, readTime } = Astro.props as Props;
@@ -15,9 +15,14 @@ const { title, date, readTime } = Astro.props as Props;
     <WordColor text={title} wordsPerColor={2} />
   </h1>
   <div class="flex items-center gap-4 text-gray-400">
-    <i class="fas fa-calendar-alt"></i>
-    <span>{date}</span>
-    <span>|</span>
-    <span>{readTime}</span>
+    
+    { (date || readTime) && (
+      <>
+        <i class="fas fa-calendar-alt"></i>
+        {date && <span>{date}</span>}
+        {date && readTime && <span>|</span>}
+        {readTime && <span>{readTime}</span>}
+      </>
+    )}
   </div>
 </div>

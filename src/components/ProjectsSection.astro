@@ -1,5 +1,8 @@
 ---
+import { projectItems } from '../data/projectItems';
+import type { ProjectItemType } from '../models';
 import Icon from './ui/Icon.astro';
+import ProjectCard from './ui/ProjectCard.astro';
 import WordColor from './ui/WordColor.astro';
 import "glightbox/dist/css/glightbox.min.css";
 
@@ -7,150 +10,11 @@ interface pageProps {
   title: string;
   description: string;
 }
-const { title = 'Latest Project', description = 'A collection of my recent work, showcasing innovative solutions and clean code. Click to explore details.' } = Astro.props as pageProps;
+const { title = 'Latest Project', description = 'A collection of my recent work and expirements. Click to explore details.' } = Astro.props as pageProps;
 
-export interface ProjectItemType {
-  title: string;
-  description: string;
-  image: string;
-  gallery: string;
-  tags: string[];
-  links: { icon: string; href: string }[];
-  icon: string;
-}
 
-const projectItems: ProjectItemType[] = [
-  {
-    title: 'sl-vue-tree',
-    description:
-      'Customizable draggable tree component for Vue.js.',
-    image: '/img/project-sl-vue-tree/image.png',
-    gallery: 'project-1',
-    tags: ['Vue', 'TypeScript'],
-    links: [
-      { icon: 'fab fa-github', href: 'https://github.com/holiber/sl-vue-tree' },
-      // { icon: 'fas fa-external-link-alt', href: '#' },
-    ],
-    icon: 'fas fa-tasks',
-  },
-  {
-    title: 'Streamlabs Desktop',
-    description:
-      'Open source software to go live to popular platforms, engage with viewers, design your stream, and grow.',
-    image: '/img/project-streamlabs-desktop/image.png',
-    gallery: 'project-1',
-    tags: ['Electron', 'React', 'Ant Design'],
-    links: [
-      { icon: 'fab fa-github', href: 'https://github.com/streamlabs/desktop' },
-      { icon: 'fas fa-external-link-alt', href: 'https://streamlabs.com/streamlabs-live-streaming-software' },
-    ],
-    icon: 'fas fa-headset',
-  },
-  {
-    title: 'Bugs Arena',
-    description:
-      'Realtime Multiplayer game on JavaScript, HTML, CSS and Websokets.',
-    image: '/img/project-bugs-arena/image.png',
-    gallery: 'project-1',
-    tags: ['HTML', 'Javascript', 'Websokets'],
-    links: [
-      { icon: 'fab fa-github', href: 'https://github.com/holiber/bugs-arena' },
-      { icon: 'fas fa-external-link-alt', href: 'https://github.com/holiber/bugs-arena' },
-    ],
-    icon: 'fas fa-bug',
-  },
-  {
-    title: 'Tetris JS',
-    description:
-      'Simple tetris game on the Cocos2d-js framework',
-    image: '/img/project-tetris/image.png',
-    gallery: 'project-1',
-    tags: ['Javascript', 'Cocos2d'],
-    links: [
-      { icon: 'fab fa-github', href: 'https://github.com/holiber/cocos2d-js-tetris' },
-      { icon: 'fas fa-external-link-alt', href: 'https://holiber.github.io/cocos2d-js-tetris/' },
-    ],
-    icon: 'fas fa-box',
-  },
-  {
-    title: 'Three charts',
-    description:
-      'Simple tetris game on the Cocos2d-js framework',
-    image: '/img/project-charts/image.png',
-    gallery: 'project-1',
-    tags: ['Javascript', 'Cocos2d'],
-    links: [
-      { icon: 'fab fa-github', href: 'https://github.com/holiber/cocos2d-js-tetris' },
-      { icon: 'fas fa-external-link-alt', href: 'https://holiber.github.io/cocos2d-js-tetris/' },
-    ],
-    icon: 'fas fa-chart-line',
-  },
-  {
-    title: 'QStore',
-    description:
-      'Query language based on json for working with collections. Diploma project inspired by MongoDB',
-    image: '/img/project-qstore/image.png',
-    gallery: 'project-1',
-    tags: ['Javascript', 'json'],
-    links: [
-      { icon: 'fab fa-github', href: 'https://github.com/holiber/qstore' },
-      { icon: 'fas fa-external-link-alt', href: 'https://holiber.github.io/qstore/' },
-    ],
-    icon: 'fas fa-chart-database',
-  },
-  {
-    title: 'Personal Website',
-    description:
-      'Query language based on json for working with collections. Diploma project inspired by MongoDB',
-    image: '/img/project-personal-website/image.png',
-    gallery: 'project-1',
-    tags: ['Astro', 'Typescript'],
-    links: [
-      { icon: 'fab fa-github', href: 'https://github.com/holiber/qstore' },
-      { icon: 'fas fa-external-link-alt', href: 'https://holiber.github.io/qstore/' },
-    ],
-    icon: 'fas fa-chart-web',
-  },
-  {
-    title: 'Streamlabs join to stream mobile app',
-    description:
-      'Query language based on json for working with collections. Diploma project inspired by MongoDB',
-    image: '/img/project-join-stream/image.png',
-    gallery: 'project-1',
-    tags: ['Astro', 'Typescript'],
-    links: [
-      { icon: 'fab fa-github', href: 'https://github.com/holiber/qstore' },
-      { icon: 'fas fa-external-link-alt', href: 'https://holiber.github.io/qstore/' },
-    ],
-    icon: 'fas fa-chart-camera',
-  },
-  {
-    title: 'Streaming Application Figma Design',
-    description:
-      'Query language based on json for working with collections. Diploma project inspired by MongoDB',
-    image: '/img/project-streaming-app/image.png',
-    gallery: 'project-1',
-    tags: ['Astro', 'Typescript'],
-    links: [
-      { icon: 'fab fa-github', href: 'https://github.com/holiber/qstore' },
-      { icon: 'fas fa-external-link-alt', href: 'https://holiber.github.io/qstore/' },
-    ],
-    icon: 'fas fa-chart-camera',
-  },
-  {
-    title: 'Minesweeper Game',
-    description:
-      'A clone of the classic Windows 98 Minesweeper, built with Phaser 3 and styled with a retro Win98 look.',
-    image: '/img/project-minesweeper/image.png',
-    gallery: 'project-1',
-    tags: ['Phaser', 'HTML', 'Javascript'],
-    links: [
-      { icon: 'fab fa-github', href: 'https://github.com/holiber/minesweeper-phaser' },
-      { icon: 'fas fa-external-link-alt', href: 'https://holiber.github.io/minesweeper-phaser/' },
-    ],
-    icon: 'fas fa-chart-camera',
-  },
-];
+
+
 ---
 
 <section id="projects" class="py-20 bg-gray-900/50 relative overflow-hidden">
@@ -167,45 +31,7 @@ const projectItems: ProjectItemType[] = [
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {projectItems.map((project, index) => (
         // project card 
-        <div class="bg-gray-950 rounded-lg overflow-hidden border border-gray-800 shadow-lg hover:shadow-xl transition-shadow transform hover:-translate-y-1" 
-        data-animate="fadeInUp"
-        data-delay={(index + 1) * 100}>
-          <a href={project.image}
-            class="glightbox"
-            data-gallery={project.gallery}
-            data-glightbox={`title: ${project.title}; description: ${project.description}`}>
-            <img
-              src={project.image}
-              alt={project.title}
-              class="w-full h-48 object-cover"
-            />
-          </a>
-          <div class="p-6">
-            <h3 class="text-xl font-bold font-code text-white mb-2 flex items-center gap-2">
-              <Icon name={project.icon} className="text-green-400 led-glow" />
-              {project.title}
-            </h3>
-            <p class="text-gray-300 mb-4">{project.description}</p>
-            <div class="flex flex-wrap gap-2 mb-4">
-              {project.tags.map((tag) => (
-                <span
-                  class="px-2 py-1 bg-gray-700/20 text-gray-300 rounded-full text-sm"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <div class="flex gap-4">
-              {project.links.map((link) => (
-                <a href={link.href}
-                  target="_blank"
-                  class="text-gray-400 hover:text-green-400 transition-colors">
-                  <Icon name={link.icon} className="text-xl" />
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
+        <ProjectCard  project={project} index={index}/>
       ))}
     </div>
   </div>
