@@ -16,6 +16,7 @@
     "tailwindcss": "^4.1.4"
   },
   "devDependencies": {
+    "@astrojs/mdx": "^4.3.4",
     "@types/alpinejs": "^3.13.11"
   }
 }

@@ -5,13 +5,15 @@ interface Props {
   rows?: number;
   required?: boolean;
   xModel?: string;
+  name: string;
 }
 
-const { id, placeholder, rows, required, xModel } = Astro.props as Props;
+const { id, placeholder, rows, required, xModel, name } = Astro.props as Props;
 ---
 
 <textarea
   id={id}
+  name={name || id}
   placeholder={placeholder}
   rows={rows || 4}
   required={required}

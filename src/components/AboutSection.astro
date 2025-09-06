@@ -15,7 +15,7 @@ export interface AboutContentType {
     avatar: string;
     url: string;
   };
-  stats: { label: string; value: number; suffix: string }[];
+  stats: { label: string; value: number; suffix: string, icon: string }[];
   skills: { name: string; percentage: number }[];
   technologies: string[];
   cta: { text: string; href: string; icon: string; count: number };
@@ -33,9 +33,9 @@ const aboutContent: AboutContentType = {
     url: 'https://github.com/holiber',
   },
   stats: [
-    { label: 'Repositories', value: 152, suffix: '' },
-    { label: 'Commits', value: 42, suffix: 'K' },
-    { label: 'PRs Merged', value: 87, suffix: '' },
+    { label: 'Repositories', value: 152, suffix: '', icon: "" },
+    { label: 'Commits', value: 42, suffix: 'K', icon: "fas fa-code-commit" },
+    { label: 'PRs Merged', value: 87, suffix: '', icon: "fas fa-code-pull-request", },
   ],
   skills: [
     { name: 'Frontend', percentage: 90 },
