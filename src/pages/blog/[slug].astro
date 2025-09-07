@@ -38,7 +38,6 @@ const relatedPosts = blogItems.filter((p) => post.relatedPosts.includes(p.slug))
       name={post.author.name}
       bio={post.author.bio}
       image={post.author.image}
-      social={post.author.social}
     />
     {relatedPosts.length > 0 && (
       <div class="relative">
