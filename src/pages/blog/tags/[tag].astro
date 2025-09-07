@@ -2,21 +2,23 @@
 import Layout from '../../../layouts/Layout.astro';
 import BlogCard from '../../../components/ui/BlogCard.astro';
 import Pagination from '../../../components/ui/Pagination.astro';
-import { blogItems } from '../../../data/blogItems';
 import BlogSidebar from '../../../components/ui/BlogSidebar.astro';
 import WordColor from '../../../components/ui/WordColor.astro';
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const tags = [...new Set(blogItems.flatMap(post => post.tags))];
-  return tags.map(tag => ({
+  const collection = await getCollection('blog', ({ data }: { data: any }) => !data.draft);
+  const tags = [...new Set(collection.flatMap((post: any) => post.data.tags || []))];
+  return tags.map((tag: string) => ({
     params: { tag: tag.toLowerCase() },
   }));
 }
 
 const { tag } = Astro.params;
-const posts = blogItems
-  .filter(post => post.tags.map(t => t.toLowerCase()).includes(tag))
-  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+const collection = await getCollection('blog', ({ data }: { data: any }) => !data.draft);
+const posts = collection
+  .filter((post: any) => (post.data.tags || []).map((t: string) => t.toLowerCase()).includes(tag))
+  .sort((a: any, b: any) => b.data.date.getTime() - a.data.date.getTime());
 
 const postsPerPage = 6;
 const currentPage = 1;
@@ -56,14 +58,14 @@ const tagPosts = posts.slice(start, end);
       <!-- Blog Posts -->
       <div class="relative lg:col-span-2">
         <div class="grid gap-6">
-           {tagPosts.map((post, index) => (
+           {tagPosts.map((post: any, index: number) => (
             <BlogCard
-                title={post.title}
-                excerpt={post.excerpt}
-                image={post.image}
-                url={post.url}
-                tags={post.tags}
-                date={post.date}
+                title={post.data.title}
+                excerpt={post.data.description || ''}
+                image={post.data.cover || '/img/blog1.jpg'}
+                url={`/blog/${post.slug}`}
+                tags={post.data.tags}
+                date={post.data.date.toDateString()}
                 index={index}
                 dataAnimate="fadeInUp"
                 dataDelay={(index + 1) * 100}

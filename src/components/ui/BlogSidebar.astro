@@ -1,5 +1,5 @@
 ---
-import { blogItems } from '../../data/blogItems';
+import { getCollection } from 'astro:content';
 
 // Define interfaces
 interface Category {
@@ -18,18 +18,21 @@ interface BlogSidebarContent {
   categories: Category[];
 }
 
-// Dynamically generate categories from blogItems
-const categories: Category[] = [...new Set(blogItems.map(post => post.category))]
-  .map(category => ({
-    name: category,
-    url: `/blog/category/${category.toLowerCase().replace('.', '')}`
+// Get blog posts from content collection
+const blogPosts = await getCollection('blog', ({ data }: { data: any }) => !data.draft);
+
+// Dynamically generate categories from blog posts
+const categories: Category[] = [...new Set(blogPosts.map((post: any) => post.data.category || 'General'))]
+  .map((category: any) => ({
+    name: String(category),
+    url: `/blog/category/${String(category).toLowerCase().replace('.', '')}`
   }));
 
-// Dynamically generate tags from blogItems
-const tags: Tag[] = [...new Set(blogItems.flatMap(post => post.tags || []))]
-  .map(tag => ({
-    name: tag,
-    url: `/blog/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`
+// Dynamically generate tags from blog posts
+const tags: Tag[] = [...new Set(blogPosts.flatMap((post: any) => post.data.tags || []))]
+  .map((tag: any) => ({
+    name: String(tag),
+    url: `/blog/tags/${String(tag).toLowerCase().replace(/\s+/g, '-')}`
   }));
 
 const content: BlogSidebarContent = {

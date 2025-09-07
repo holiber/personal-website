@@ -1,10 +1,11 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { blogItems } from '../../../data/blogItems';
 import BlogSidebar from '../../../components/ui/BlogSidebar.astro';
 import WordColor from '../../../components/ui/WordColor.astro';
+import { getCollection } from 'astro:content';
 
-const categories = [...new Set(blogItems.map(post => post.category))];
+const collection = await getCollection('blog', ({ data }: { data: any }) => !data.draft);
+const categories = [...new Set(collection.map((post: any) => post.data.category || 'General'))];
 ---
 
 <Layout title="Blog | Tech Blog">

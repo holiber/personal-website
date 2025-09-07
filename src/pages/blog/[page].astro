@@ -2,13 +2,14 @@
 import Layout from '../../layouts/Layout.astro';
 import BlogCard from '../../components/ui/BlogCard.astro';
 import Pagination from '../../components/ui/Pagination.astro';
-import { blogItems } from '../../data/blogItems';
 import BlogSidebar from '../../components/ui/BlogSidebar.astro';
 import WordColor from '../../components/ui/WordColor.astro';
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
+  const collection = await getCollection('blog', ({ data }: { data: any }) => !data.draft);
   const postsPerPage = 2;
-  const totalPosts = blogItems.length;
+  const totalPosts = collection.length;
   const totalPages = Math.ceil(totalPosts / postsPerPage);
 
   return Array.from({ length: totalPages - 1 }, (_, i) => ({
@@ -32,17 +33,19 @@ const content: BlogPageContent = {
 const { page } = Astro.params;
 const currentPage = Number(page);
 const postsPerPage = 6;
-const totalPosts = blogItems.length;
+
+const collection = await getCollection('blog', ({ data }: { data: any }) => !data.draft);
+const totalPosts = collection.length;
 const totalPages = Math.ceil(totalPosts / postsPerPage);
 
 if (isNaN(currentPage) || currentPage < 2 || currentPage > totalPages) {
   return Astro.redirect('/blog/');
 }
 
-const sortedBlogItems = blogItems.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+const sorted = collection.sort((a: any, b: any) => b.data.date.getTime() - a.data.date.getTime());
 const start = (currentPage - 1) * postsPerPage;
 const end = Math.min(start + postsPerPage, totalPosts);
-const posts = sortedBlogItems.slice(start, end);
+const posts = sorted.slice(start, end);
 ---
 
 <Layout title="Blog | Tech Blog">
@@ -75,14 +78,14 @@ const posts = sortedBlogItems.slice(start, end);
       <div class="relative lg:col-span-2">
         {posts.length > 0 ? (
             <div class="grid gap-6">
-            {posts.map((post, index) => (
+            {posts.map((post: any, index: number) => (
               <BlogCard
-                title={post.title}
-                excerpt={post.excerpt}
-                image={post.image}
-                url={post.url}
-                tags={post.tags}
-                date={post.date}
+                title={post.data.title}
+                excerpt={post.data.description || ''}
+                image={post.data.cover || '/img/blog1.jpg'}
+                url={`/blog/${post.slug}`}
+                tags={post.data.tags}
+                date={post.data.date.toDateString()}
                 index={index}
                 dataAnimate="fadeInUp"
                 dataDelay={(index + 1) * 100}

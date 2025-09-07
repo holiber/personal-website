@@ -19,8 +19,8 @@ const content: BlogPageContent = {
   },
 };
 
-const collection = await getCollection('blog', ({ data }) => !data.draft);
-const sorted = collection.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const collection = await getCollection('blog', ({ data }: { data: any }) => !data.draft);
+const sorted = collection.sort((a: any, b: any) => b.data.date.getTime() - a.data.date.getTime());
 
 const postsPerPage = 6;
 const currentPage = 1;
@@ -61,12 +61,12 @@ const posts = sorted.slice(start, end);
       <div class="relative lg:col-span-2">
         {posts.length > 0 ? (
           <div class="grid gap-6">
-            {posts.map((post, index) => (
+            {posts.map((post: any, index: number) => (
               <BlogCard
                 title={post.data.title}
                 excerpt={post.data.description || ''}
                 image={post.data.cover || '/img/blog1.jpg'}
-                url={`/blog/${post.id}`}
+                url={`/blog/${post.slug}`}
                 tags={post.data.tags}
                 date={post.data.date.toDateString()}
                 index={index}

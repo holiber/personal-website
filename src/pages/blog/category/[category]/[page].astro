@@ -2,16 +2,17 @@
 import Layout from '../../../../layouts/Layout.astro';
 import BlogCard from '../../../../components/ui/BlogCard.astro';
 import Pagination from '../../../../components/ui/Pagination.astro';
-import { blogItems } from '../../../../data/blogItems';
 import BlogSidebar from '../../../../components/ui/BlogSidebar.astro';
 import WordColor from '../../../../components/ui/WordColor.astro';
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const categories = [...new Set(blogItems.map(post => post.category))];
+  const collection = await getCollection('blog', ({ data }: { data: any }) => !data.draft);
+  const categories = [...new Set(collection.map((post: any) => post.data.category || 'General'))];
   const paths = [];
 
   for (const category of categories) {
-    const posts = blogItems.filter(post => post.category.toLowerCase() === category.toLowerCase());
+    const posts = collection.filter((post: any) => (post.data.category || 'General').toLowerCase() === category.toLowerCase());
     const totalPosts = posts.length;
     const postsPerPage = 2;
     const totalPages = Math.ceil(totalPosts / postsPerPage);
@@ -28,9 +29,10 @@ export async function getStaticPaths() {
 
 const { category, page } = Astro.params;
 const currentPage = Number(page);
-const posts = blogItems
-  .filter(post => post.category.toLowerCase() === category)
-  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+const collection = await getCollection('blog', ({ data }: { data: any }) => !data.draft);
+const posts = collection
+  .filter((post: any) => (post.data.category || 'General').toLowerCase() === category)
+  .sort((a: any, b: any) => b.data.date.getTime() - a.data.date.getTime());
 
 const postsPerPage = 2;
 const totalPosts = posts.length;
@@ -74,14 +76,14 @@ const categoryPosts = posts.slice(start, end);
       <div class="relative lg:col-span-2">
         {categoryPosts.length > 0 ? (
           <div class="grid gap-6">
-            {categoryPosts.map((post, index) => (
+            {categoryPosts.map((post: any, index: number) => (
               <BlogCard
-                title={post.title}
-                excerpt={post.excerpt}
-                image={post.image}
-                url={post.url}
-                tags={post.tags}
-                date={post.date}
+                title={post.data.title}
+                excerpt={post.data.description || ''}
+                image={post.data.cover || '/img/blog1.jpg'}
+                url={`/blog/${post.slug}`}
+                tags={post.data.tags}
+                date={post.data.date.toDateString()}
                 index={index}
                 dataAnimate="fadeInUp"
                 dataDelay={(index + 1) * 100}

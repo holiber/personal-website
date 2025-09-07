@@ -1,8 +1,8 @@
 ---
-import { blogItems, type BlogItemType } from '../data/blogItems';
 import BlogCard from './ui/BlogCard.astro';
 import Button from './ui/Button.astro';
 import WordColor from './ui/WordColor.astro';
+import { getCollection } from 'astro:content';
 
 export interface BlogSectionType {
   title: string;
@@ -20,6 +20,10 @@ const blogSection: BlogSectionType = {
     icon: 'fas fa-book-open',
   },
 };
+
+const collection = await getCollection('blog', ({ data }: { data: any }) => !data.draft);
+const sorted = collection.sort((a: any, b: any) => b.data.date.getTime() - a.data.date.getTime());
+const blogItems = sorted.slice(0, 3); // Show only first 3 posts
 ---
 
 <section
@@ -39,14 +43,14 @@ const blogSection: BlogSectionType = {
     </div>
     <div class="flex flex-col gap-12">
       <div class="space-y-8">
-        {blogItems.map((post, index) => (
+        {blogItems.map((post: any, index: number) => (
           <BlogCard
-            title={post.title}
-            excerpt={post.excerpt}
-            image={post.image}
-            date={post.date}
-            tags={post.tags}
-            url={post.url}
+            title={post.data.title}
+            excerpt={post.data.description || ''}
+            image={post.data.cover || '/img/blog1.jpg'}
+            date={post.data.date.toDateString()}
+            tags={post.data.tags}
+            url={`/blog/${post.slug}`}
             index={index} />
         ))}
       </div>
