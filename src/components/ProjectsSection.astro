@@ -13,12 +13,17 @@ const { title = 'Latest Projects and Experiments', description = 'A collection o
 
 const projectItems = await getCollection('projects' as any);
 
+// Sort projects by date (newest first)
+const sortedProjects = projectItems.sort((a: any, b: any) => {
+  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
+
 // Helper function to resolve image paths
-const resolveImagePath = (imagePath: string, slug: string) => {
+const resolveImagePath = (imagePath: string, project: any) => {
   if (imagePath.startsWith('./')) {
     // Handle slugs that already start with "project-"
-    const projectPrefix = slug.startsWith('project-') ? '' : 'project-';
-    return `/img/${projectPrefix}${slug}/${imagePath.slice(2)}`;
+    const projectPrefix = project.slug.startsWith('project-') ? '' : 'project-';
+    return `/img/${projectPrefix}${project.slug}/${imagePath.slice(2)}`;
   }
   return imagePath;
 };
@@ -38,15 +43,15 @@ const resolveImagePath = (imagePath: string, slug: string) => {
       </p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {projectItems.map((project: any, index: number) => (
+      {sortedProjects.map((project: any, index: number) => (
         // project card 
         <ProjectCard  project={{
           title: project.data.title,
           slug: project.slug,
           description: project.data.description,
           content: '', // Content is now in MDX body
-          image: resolveImagePath(project.data.image, project.slug),
-          gallery: project.data.gallery?.map((img: string) => resolveImagePath(img, project.slug)) || [],
+          image: resolveImagePath(project.data.image, project),
+          gallery: project.data.gallery?.map((img: string) => resolveImagePath(img, project)) || [],
           tags: project.data.tags,
           links: project.data.links,
           icon: project.data.icon
