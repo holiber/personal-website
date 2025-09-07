@@ -3,42 +3,41 @@ import Layout from '../../layouts/Layout.astro';
 import BlogHeader from '../../components/BlogHeader.astro';
 import AuthorCard from '../../components/ui/AuthorCard.astro';
 import RelatedPost from '../../components/ui/RelatedPost.astro';
-import { blogItems } from '../../data/blogItems';
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  return blogItems.map((post) => ({
-    params: { slug: post.slug },
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
     props: { post },
   }));
 }
 
-const { post } = Astro.props;
-const title = post.title;
-const relatedPosts = blogItems.filter((p) => post.relatedPosts.includes(p.slug));
+const { post } = Astro.props as { post: Awaited<ReturnType<typeof getCollection<'blog'>>>[0] };
+const title = post.data.title;
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const relatedPosts = allPosts.filter((p) => p.id !== post.id && p.data.tags.some((t: string) => post.data.tags.includes(t))).slice(0, 3);
 ---
 
 <Layout title={title}>
   <section class="py-12 max-w-6xl mx-auto px-6 lg:px-12 relative z-10">
     <BlogHeader 
-      title={post.title}
-      date={post.date}
-      readTime={post.readTime}
+      title={post.data.title}
+      date={post.data.date.toDateString()}
     />
     <div class="py-8 px-6 bg-gray-950 rounded-lg border border-gray-800 mb-8">
-      <div class="relative mb-8">
-        <img 
-          src={post.image} 
-          alt={post.title} 
-          class="w-full object-cover rounded-lg border border-gray-800" 
-        />
-      </div>
-      <div class="post-content text-gray-300 space-y-8" set:html={post.content} />
+      {post.data.cover && (
+        <div class="relative mb-8">
+          <img 
+            src={post.data.cover} 
+            alt={post.data.title} 
+            class="w-full object-cover rounded-lg border border-gray-800" 
+          />
+        </div>
+      )}
+      <article class="prose prose-invert max-w-none" set:html={post.body} />
     </div>
-    <AuthorCard 
-      name={post.author.name}
-      bio={post.author.bio}
-      image={post.author.image}
-    />
     {relatedPosts.length > 0 && (
       <div class="relative">
         <h3 class="text-xl font-bold font-code text-white mb-6 flex items-center gap-2">
@@ -47,11 +46,11 @@ const relatedPosts = blogItems.filter((p) => post.relatedPosts.includes(p.slug))
         <div class="grid grid-cols-1 gap-6">
           {relatedPosts.map((related) => (
             <RelatedPost 
-              title={related.title}
-              excerpt={related.excerpt}
-              image={related.image}
-              url={related.url}
-              date={related.date}
+              title={related.data.title}
+              excerpt={related.data.description || ''}
+              image={related.data.cover || '/img/blog1.jpg'}
+              url={`/blog/${related.id}`}
+              date={related.data.date.toDateString()}
             />
           ))}
         </div>
