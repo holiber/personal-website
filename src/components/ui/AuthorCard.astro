@@ -5,14 +5,9 @@ interface Props {
   name: string;
   bio: string;
   image: string;
-  social: {
-    github: string;
-    linkedin: string;
-    twitter: string;
-  };
 }
 
-const { name, bio, image, social } = Astro.props as Props;
+const { name, bio, image } = Astro.props as Props;
 ---
 
 <div class="p-6 bg-gray-950 rounded-lg border border-gray-800 mb-8">
