@@ -1,9 +1,8 @@
 ---
-import { projectItems } from '../data/projectItems';
-import type { ProjectItemType } from '../models';
 import Icon from './ui/Icon.astro';
 import ProjectCard from './ui/ProjectCard.astro';
 import WordColor from './ui/WordColor.astro';
+import { getCollection } from 'astro:content';
 import "glightbox/dist/css/glightbox.min.css";
 
 interface pageProps {
@@ -12,7 +11,17 @@ interface pageProps {
 }
 const { title = 'Latest Projects and Experiments', description = 'A collection of my recent work and expirements. Click to explore details.' } = Astro.props as pageProps;
 
+const projectItems = await getCollection('projects' as any);
 
+// Helper function to resolve image paths
+const resolveImagePath = (imagePath: string, slug: string) => {
+  if (imagePath.startsWith('./')) {
+    // Handle slugs that already start with "project-"
+    const projectPrefix = slug.startsWith('project-') ? '' : 'project-';
+    return `/img/${projectPrefix}${slug}/${imagePath.slice(2)}`;
+  }
+  return imagePath;
+};
 
 
 ---
@@ -29,9 +38,19 @@ const { title = 'Latest Projects and Experiments', description = 'A collection o
       </p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {projectItems.map((project, index) => (
+      {projectItems.map((project: any, index: number) => (
         // project card 
-        <ProjectCard  project={project} index={index}/>
+        <ProjectCard  project={{
+          title: project.data.title,
+          slug: project.slug,
+          description: project.data.description,
+          content: '', // Content is now in MDX body
+          image: resolveImagePath(project.data.image, project.slug),
+          gallery: project.data.gallery?.map((img: string) => resolveImagePath(img, project.slug)) || [],
+          tags: project.data.tags,
+          links: project.data.links,
+          icon: project.data.icon
+        }} index={index}/>
       ))}
     </div>
   </div>
