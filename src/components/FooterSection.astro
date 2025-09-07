@@ -1,7 +1,7 @@
 ---
 import Logo from './ui/Logo.astro';
 import NavLink from './ui/NavLink.astro';
-import SocialLink from './ui/SocialLink.astro';
+import SocialLinks from './ui/SocialLinks.astro';
 
 export interface FooterContentType {
   description: string;
@@ -59,10 +59,8 @@ const footerContent: FooterContentType = {
         <p class="text-gray-400 text-left lg:pe-16">
           {footerContent.description}
         </p>
-        <div class="flex gap-4 mt-4">
-         {footerContent.socialLinks.map((link) => (
-            <SocialLink href={link.href} icon={link.icon} />
-          ))}
+        <div class="mt-4">
+          <SocialLinks />
         </div>
       </div>
       <div class="flex flex-col">

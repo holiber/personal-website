@@ -1,4 +1,6 @@
 ---
+import SocialLinks from './SocialLinks.astro';
+
 interface Props {
   name: string;
   bio: string;
@@ -24,7 +26,7 @@ const { name, bio, image, social } = Astro.props as Props;
       <h4 class="max-sm:text-center text-lg font-bold text-white mb-1">{name}</h4>
       <p class="text-gray-300 mb-3">{bio}</p>
       <div class="flex gap-4">
-        <a href={social.github} target="_blank" class="text-gray-300 hover:text-green-400 text-xl">
+        <!-- <a href={social.github} target="_blank" class="text-gray-300 hover:text-green-400 text-xl">
           <i class="fab fa-github"></i>
         </a>
         <a href={social.linkedin} target="_blank" class="text-gray-300 hover:text-green-400 text-xl">
@@ -32,7 +34,8 @@ const { name, bio, image, social } = Astro.props as Props;
         </a>
         <a href={social.twitter} target="_blank" class="text-gray-300 hover:text-green-400 text-xl">
           <i class="fab fa-twitter"></i>
-        </a>
+        </a> -->
+        <SocialLinks />
       </div>
     </div>
   </div>

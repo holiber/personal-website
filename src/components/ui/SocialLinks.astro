@@ -1,0 +1,10 @@
+---
+import SocialLink from './SocialLink.astro';
+import { info } from '../../data/info';
+---
+
+<div class="flex gap-4">
+  {info.socials.map((link) => (
+    <SocialLink href={link.href} icon={link.icon} />
+  ))}
+</div>

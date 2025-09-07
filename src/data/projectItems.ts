@@ -51,8 +51,8 @@ export const projectItems: ProjectItemType[] = [
       title: 'React AI Forms',
       slug: 'react-ai-forms',
       description:
-        'AI-powered form generation system built with React, featuring dynamic form creation and intelligent field validation.',
-      content: 'A sophisticated React application that leverages AI to generate dynamic forms with intelligent validation. Features include automatic form field generation, real-time validation, dynamic form schemas, and seamless integration with modern React patterns. Built with TypeScript for type safety and includes advanced form handling capabilities with uniforms-antd integration.',
+        'AI-powered form generation system built with React, featuring dynamic form creation and field validation.',
+      content: 'A React application that leverages AI to generate dynamic forms with intelligent validation. Features include automatic form field generation, real-time validation, dynamic form schemas, and seamless integration with modern React patterns. Built with TypeScript for type safety and includes advanced form handling capabilities with uniforms-antd integration. Uses React Cosmos, Rocket Chat and Stackblitz under the hood.',
       image: '/img/project-react-ai-forms/image.png',
       gallery: ['/img/project-react-ai-forms/image.png', '/img/project-react-ai-forms/image.png', '/img/project-react-ai-forms/image.png'],
       tags: ['React', 'TypeScript', 'AI', 'Forms'],

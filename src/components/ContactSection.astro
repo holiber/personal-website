@@ -2,16 +2,16 @@
 import Button from './ui/Button.astro';
 import Input from './ui/Input.astro';
 import Textarea from './ui/Textarea.astro';
-import SocialLink from './ui/SocialLink.astro';
+import SocialLinks from './ui/SocialLinks.astro';
 import WordColor from './ui/WordColor.astro';
 import Coffee from './ui/Coffee.astro';
+import { info } from '../data/info';
 
 export interface ContactContentType {
   title: string;
   description: string;
   form: { title: string; icon: string };
   contactInfo: { icon: string; text: string; href?: string }[];
-  socialLinks: { icon: string; href: string }[];
 }
 
 const contactContent: ContactContentType = {
@@ -34,13 +34,7 @@ const contactContent: ContactContentType = {
       href: 'tel:+1234567890',
     },
     { icon: 'fas fa-map-marker-alt', text: 'San Francisco, CA' },
-  ],
-  socialLinks: [
-    { icon: 'fab fa-github', href: 'https://github.com/' },
-    { icon: 'fab fa-linkedin', href: 'https://linkedin.com/in/' },
-    { icon: 'fab fa-twitter', href: 'https://twitter.com/' },
-    { icon: 'fab fa-dev', href: 'https://dev.to/' },
-  ],
+  ]
 };
 ---
 
@@ -132,9 +126,7 @@ const contactContent: ContactContentType = {
               Connect with Me
             </h3>
             <div class="flex gap-6">
-              {contactContent.socialLinks.map((link) => (
-                <SocialLink href={link.href} icon={link.icon} />
-              ))}
+              <SocialLinks />
             </div>
           </div>
         </div>
