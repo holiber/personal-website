@@ -32,6 +32,10 @@ const resolveImagePath = (imagePath: string) => {
 
 const resolvedImage = resolveImagePath(project.data.image);
 const resolvedGallery = project.data.gallery?.map((img: string) => resolveImagePath(img)) || [];
+
+// Check if project has video
+const hasVideo = project.data.video;
+const videoSrc = hasVideo ? resolveImagePath(project.data.video) : null;
 ---
 
 <Layout title={title}>
@@ -42,11 +46,21 @@ const resolvedGallery = project.data.gallery?.map((img: string) => resolveImageP
     <div class="py-8 px-6 bg-gray-950 rounded-lg border border-gray-800 mb-8">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         <div class="relative mb-8 md:mb-0">
-          <img 
-            src={resolvedImage} 
-            alt={project.data.title} 
-            class="w-full object-cover rounded-lg border border-gray-800" 
-          />
+          {hasVideo ? (
+            <video 
+              src={videoSrc}
+              controls
+              class="w-full object-cover rounded-lg border border-gray-800"
+            >
+              Your browser does not support the video tag.
+            </video>
+          ) : (
+            <img 
+              src={resolvedImage} 
+              alt={project.data.title} 
+              class="w-full object-cover rounded-lg border border-gray-800" 
+            />
+          )}
         </div>
         <div>
           <div class="mb-4 text-gray-200">{project.data.description}</div>
