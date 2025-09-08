@@ -21,7 +21,11 @@ const projectItems = allProjectItems
   .filter((project) => {
     // featured projects are handled differently
     return !project.data.isFeatured;
-  }); 
+  });
+
+// Pagination state
+const initialProjectsCount = 9;
+const hasMoreProjects = projectItems.length > initialProjectsCount; 
 
 // Sort projects by date (newest first)
 const sortedProjects = projectItems.sort((a: any, b: any) => {
@@ -91,7 +95,7 @@ const mailruDocsProject = allProjectItems.find(
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {
-        sortedProjects.map((project: any, index: number) => (
+        sortedProjects.slice(0, initialProjectsCount).map((project: any, index: number) => (
           // project card
           <ProjectCard
             project={{
@@ -113,16 +117,63 @@ const mailruDocsProject = allProjectItems.find(
         ))
       }
     </div>
+    
+    {hasMoreProjects && (
+      <div class="text-center mt-12">
+        <button
+          id="showMoreBtn"
+          class="font-bold rounded-lg transition-all inline-flex items-center justify-center gap-2 px-8 py-3 bg-green-500 hover:bg-green-600 text-gray-900"
+        >
+          Show More Projects
+        </button>
+      </div>
+    )}
+    
+    <div id="hiddenProjects" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+      {
+        sortedProjects.slice(initialProjectsCount).map((project: any, index: number) => (
+          // project card
+          <ProjectCard
+            project={{
+              title: project.data.title,
+              slug: project.slug,
+              description: project.data.description,
+              content: "", // Content is now in MDX body
+              image: resolveImagePath(project.data.image, project),
+              gallery:
+                project.data.gallery?.map((img: string) =>
+                  resolveImagePath(img, project),
+                ) || [],
+              tags: project.data.tags,
+              links: project.data.links,
+              icon: project.data.icon,
+            }}
+            index={index + initialProjectsCount}
+          />
+        ))
+      }
+    </div>
   </div>
 </section>
 
 <script>
-  import GLightbox from "glightbox";
+  // import GLightbox from "glightbox";
 
   document.addEventListener("DOMContentLoaded", () => {
     // GLightbox
-    const lightbox = GLightbox({
-      selector: ".glightbox",
-    });
+    // const lightbox = GLightbox({
+    //   selector: ".glightbox",
+    // });
+
+    // Show More functionality
+    const showMoreBtn = document.getElementById('showMoreBtn');
+    const hiddenProjects = document.getElementById('hiddenProjects');
+    
+    if (showMoreBtn && hiddenProjects) {
+      showMoreBtn.addEventListener('click', () => {
+        hiddenProjects.classList.remove('hidden');
+        showMoreBtn.style.display = 'none';
+      });
+    }
   });
 </script>

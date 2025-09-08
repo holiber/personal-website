@@ -20,6 +20,7 @@ const projects = defineCollection({
     date: z.coerce.date(),
     description: z.string(),
     image: z.string(),
+    video: z.string().optional(),
     gallery: z.array(z.string()).optional(),
     tags: z.array(z.string()).default([]),
     links: z.array(z.object({
