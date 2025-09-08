@@ -8,6 +8,7 @@ interface Props {
     data: {
       title: string;
       description: string;
+      icon: string;
       links: Array<{
         href: string;
         icon: string;
@@ -48,11 +49,12 @@ const isVideo = media.endsWith('.webm') || media.endsWith('.mp4') || media.endsW
       {/* description and links */}
       <div class="p-6 flex flex-col justify-between">
         <h3 class="text-xl font-bold font-code text-white mb-2 flex items-center gap-2">
+          <i class={`fas ${project.data.icon} text-green-400 led-glow`}></i>
           {project.data.title}
         </h3>
-        <div class="mb-4 text-gray-200 h-full">
-          {project.data.description.split('\n').map((paragraph: string) => (
-            <p class="mb-2">{paragraph}</p>
+        <div class="mb-4 h-full">
+          {project.data.description.split('\n').map((paragraph: string, index: number) => (
+            <p class={`mb-2 ${index === 0 ? 'text-gray-200' : 'text-gray-400'}`}>{paragraph}</p>
           ))}
         </div>
 
@@ -86,9 +88,9 @@ const isVideo = media.endsWith('.webm') || media.endsWith('.mp4') || media.endsW
         <h3 class="text-xl font-bold font-code text-white mb-2 flex items-center gap-2">
           {project.data.title}
         </h3>
-        <div class="mb-4 text-gray-200 h-full">
-          {project.data.description.split('\n').map((paragraph: string) => (
-            <p class="mb-2">{paragraph}</p>
+        <div class="mb-4 h-full">
+          {project.data.description.split('\n').map((paragraph: string, index: number) => (
+            <p class={`mb-2 ${index === 0 ? 'text-gray-200' : 'text-gray-300'}`}>{paragraph}</p>
           ))}
         </div>
 
