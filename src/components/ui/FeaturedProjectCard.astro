@@ -1,0 +1,138 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  media: string;
+  project: {
+    slug: string;
+    data: {
+      title: string;
+      description: string;
+      links: Array<{
+        href: string;
+        icon: string;
+      }>;
+    };
+  };
+  orientation?: 'left' | 'right';
+}
+
+const { project, media, orientation = 'left' } = Astro.props;
+
+// Determine if media is a video or image
+const isVideo = media.endsWith('.webm') || media.endsWith('.mp4') || media.endsWith('.mov');
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-950 rounded-lg">
+  {orientation === 'left' ? (
+    <>
+      {/* media */}
+      <div class="relative mb-8 md:mb-0">
+        {isVideo ? (
+          <video
+            class="w-full h-auto rounded-lg"
+            src={media}
+            autoplay
+            loop
+            muted
+            playsinline></video>
+        ) : (
+          <img
+            class="w-full h-auto rounded-lg"
+            src={media}
+            alt={project.data.title}
+          />
+        )}
+      </div>
+
+      {/* description and links */}
+      <div class="p-6 flex flex-col justify-between">
+        <h3 class="text-xl font-bold font-code text-white mb-2 flex items-center gap-2">
+          {project.data.title}
+        </h3>
+        <div class="mb-4 text-gray-200 h-full">
+          {project.data.description.split('\n').map((paragraph: string) => (
+            <p class="mb-2">{paragraph}</p>
+          ))}
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex gap-4 mb-4 text-center justify-center">
+            {project.data.links.map((link: any) => (
+              <a
+                href={link.href}
+                target="_blank"
+                class="text-gray-400 hover:text-green-400 transition-colors"
+                onclick="event.stopPropagation()"
+              >
+                <Icon name={link.icon} className="text-xl" />
+              </a>
+            ))}
+          </div>
+
+          <a
+            href={`/projects/${project.slug}`}
+            class="text-green-400 hover:text-green-600 font-medium flex items-center gap-2"
+          >
+            Read More <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </>
+  ) : (
+    <>
+      {/* description and links */}
+      <div class="p-6 flex flex-col justify-between">
+        <h3 class="text-xl font-bold font-code text-white mb-2 flex items-center gap-2">
+          {project.data.title}
+        </h3>
+        <div class="mb-4 text-gray-200 h-full">
+          {project.data.description.split('\n').map((paragraph: string) => (
+            <p class="mb-2">{paragraph}</p>
+          ))}
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex gap-4 mb-4 text-center justify-center">
+            {project.data.links.map((link: any) => (
+              <a
+                href={link.href}
+                target="_blank"
+                class="text-gray-400 hover:text-green-400 transition-colors"
+                onclick="event.stopPropagation()"
+              >
+                <Icon name={link.icon} className="text-xl" />
+              </a>
+            ))}
+          </div>
+
+          <a
+            href={`/projects/${project.slug}`}
+            class="text-green-400 hover:text-green-600 font-medium flex items-center gap-2"
+          >
+            Read More <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      {/* media */}
+      <div class="relative mb-8 md:mb-0">
+        {isVideo ? (
+          <video
+            class="w-full h-auto rounded-lg"
+            src={media}
+            autoplay
+            loop
+            muted
+            playsinline></video>
+        ) : (
+          <img
+            class="w-full h-auto rounded-lg"
+            src={media}
+            alt={project.data.title}
+          />
+        )}
+      </div>
+    </>
+  )}
+</div>

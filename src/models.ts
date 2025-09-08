@@ -8,4 +8,5 @@ export interface ProjectItemType {
     tags: string[];
     links: { icon: string; href: string }[];
     icon: string;
+    isFeatured?: boolean;
   }

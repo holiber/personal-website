@@ -1,17 +1,27 @@
 ---
-import Icon from './ui/Icon.astro';
-import ProjectCard from './ui/ProjectCard.astro';
-import WordColor from './ui/WordColor.astro';
-import { getCollection } from 'astro:content';
+import type { ProjectItemType } from "../models";
+import Icon from "./ui/Icon.astro";
+import ProjectCard from "./ui/ProjectCard.astro";
+import FeaturedProjectCard from "./ui/FeaturedProjectCard.astro";
+import WordColor from "./ui/WordColor.astro";
+import { getCollection } from "astro:content";
 import "glightbox/dist/css/glightbox.min.css";
 
 interface pageProps {
   title: string;
   description: string;
 }
-const { title = 'Latest Projects and Experiments', description = 'A collection of my recent work and expirements. Click to explore details.' } = Astro.props as pageProps;
+const {
+  title = "Latest Projects and Experiments",
+  description = "A collection of my recent work and expirements. Click to explore details.",
+} = Astro.props as pageProps;
 
-const projectItems = await getCollection('projects' as any);
+const allProjectItems = await getCollection("projects");
+const projectItems = allProjectItems
+  .filter((project) => {
+    // featured projects are handled differently
+    return !project.data.isFeatured;
+  }); 
 
 // Sort projects by date (newest first)
 const sortedProjects = projectItems.sort((a: any, b: any) => {
@@ -20,54 +30,99 @@ const sortedProjects = projectItems.sort((a: any, b: any) => {
 
 // Helper function to resolve image paths
 const resolveImagePath = (imagePath: string, project: any) => {
-  if (imagePath.startsWith('./')) {
+  if (imagePath.startsWith("./")) {
     // Handle slugs that already start with "project-"
-    const projectPrefix = project.slug.startsWith('project-') ? '' : 'project-';
+    const projectPrefix = project.slug.startsWith("project-") ? "" : "project-";
     return `/img/${projectPrefix}${project.slug}/${imagePath.slice(2)}`;
   }
   return imagePath;
 };
 
-
+const slDesktopProject = allProjectItems.find(
+  (project: any) => project.slug === "streamlabs-desktop",
+)!;
+const mailruDocsProject = allProjectItems.find(
+  (project: any) => project.slug === "mailru-docs",
+)!;
 ---
 
+
 <section id="projects" class="py-20 bg-gray-900/50 relative overflow-hidden">
+
+  <div class="max-w-6xl mx-auto px-6 lg:px-12 relative z-10 pb-20">
+
+    <!-- collaboration header -->
+    <div class="text-center mb-16">
+      <h2
+        class="text-3xl lg:text-4xl font-bold font-code inline-block relative text-white mb-1"
+      >
+        <WordColor text="Latest Collaboration" wordsPerColor={1} />
+        <div
+          class="absolute -bottom-2 left-0 w-full h-1 bg-green-500 opacity-70"
+        >
+        </div>
+      </h2>
+      <p class="text-gray-400 mt-4 max-w-2xl mx-auto">
+        Projects where it took significant collaboration with other developers.
+      </p>
+    </div>
+
+    {/* FEATURED PROJECT CARD */}
+    <FeaturedProjectCard project={slDesktopProject} media="/img/project-streamlabs-desktop/sl-desktop.webm" orientation="left" />
+    <div class="my-12 text-center" ><i class="fas fa-code text-green-400 text-2xl led-glow"></i></div>
+    <FeaturedProjectCard project={mailruDocsProject} media="/img/project-mailru-docs/image.png" orientation="right" />
+  </div>
+
+
   <div class="max-w-6xl mx-auto px-6 lg:px-12 relative z-10">
     <div class="text-center mb-16">
-      <h2 class="text-3xl lg:text-4xl font-bold font-code inline-block relative text-white mb-1">
+      <h2
+        class="text-3xl lg:text-4xl font-bold font-code inline-block relative text-white mb-1"
+      >
         <WordColor text={title} wordsPerColor={1} />
-        <div class="absolute -bottom-2 left-0 w-full h-1 bg-green-500 opacity-70"></div>
+        <div
+          class="absolute -bottom-2 left-0 w-full h-1 bg-green-500 opacity-70"
+        >
+        </div>
       </h2>
       <p class="text-gray-400 mt-4 max-w-2xl mx-auto">
         {description}
       </p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {sortedProjects.map((project: any, index: number) => (
-        // project card 
-        <ProjectCard  project={{
-          title: project.data.title,
-          slug: project.slug,
-          description: project.data.description,
-          content: '', // Content is now in MDX body
-          image: resolveImagePath(project.data.image, project),
-          gallery: project.data.gallery?.map((img: string) => resolveImagePath(img, project)) || [],
-          tags: project.data.tags,
-          links: project.data.links,
-          icon: project.data.icon
-        }} index={index}/>
-      ))}
+      {
+        sortedProjects.map((project: any, index: number) => (
+          // project card
+          <ProjectCard
+            project={{
+              title: project.data.title,
+              slug: project.slug,
+              description: project.data.description,
+              content: "", // Content is now in MDX body
+              image: resolveImagePath(project.data.image, project),
+              gallery:
+                project.data.gallery?.map((img: string) =>
+                  resolveImagePath(img, project),
+                ) || [],
+              tags: project.data.tags,
+              links: project.data.links,
+              icon: project.data.icon,
+            }}
+            index={index}
+          />
+        ))
+      }
     </div>
   </div>
 </section>
 
 <script>
-import GLightbox from 'glightbox';
+  import GLightbox from "glightbox";
 
-document.addEventListener("DOMContentLoaded", () => {
-  // GLightbox
-  const lightbox = GLightbox({
-    selector: '.glightbox',
+  document.addEventListener("DOMContentLoaded", () => {
+    // GLightbox
+    const lightbox = GLightbox({
+      selector: ".glightbox",
+    });
   });
-});
 </script>

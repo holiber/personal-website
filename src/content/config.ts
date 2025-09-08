@@ -28,6 +28,7 @@ const projects = defineCollection({
     })).default([]),
     icon: z.string(),
     draft: z.boolean().default(false),
+    isFeatured: z.boolean().default(false),
   }),
 });
 
