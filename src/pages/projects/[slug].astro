@@ -1,13 +1,13 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import BlogHeader from '../../components/BlogHeader.astro';
-import AuthorCard from '../../components/ui/AuthorCard.astro';
-import RelatedPost from '../../components/ui/RelatedPost.astro';
-import Icon from '../../components/ui/Icon.astro';
-import { getCollection } from 'astro:content';
+import Layout from "../../layouts/Layout.astro";
+import BlogHeader from "../../components/BlogHeader.astro";
+import AuthorCard from "../../components/ui/AuthorCard.astro";
+import RelatedPost from "../../components/ui/RelatedPost.astro";
+import Icon from "../../components/ui/Icon.astro";
+import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
-  const projects = await getCollection('projects' as any);
+  const projects = await getCollection("projects" as any);
   return projects.map((project: any) => ({
     params: { slug: project.slug },
     props: { project },
@@ -22,16 +22,17 @@ const { Content } = await project.render();
 
 // Resolve image paths - convert relative paths to absolute paths
 const resolveImagePath = (imagePath: string) => {
-  if (imagePath.startsWith('./')) {
+  if (imagePath.startsWith("./")) {
     // Handle slugs that already start with "project-"
-    const projectPrefix = project.slug.startsWith('project-') ? '' : 'project-';
+    const projectPrefix = project.slug.startsWith("project-") ? "" : "project-";
     return `/img/${projectPrefix}${project.slug}/${imagePath.slice(2)}`;
   }
   return imagePath;
 };
 
 const resolvedImage = resolveImagePath(project.data.image);
-const resolvedGallery = project.data.gallery?.map((img: string) => resolveImagePath(img)) || [];
+const resolvedGallery =
+  project.data.gallery?.map((img: string) => resolveImagePath(img)) || [];
 
 // Check if project has video
 const hasVideo = project.data.video;
@@ -40,74 +41,83 @@ const videoSrc = hasVideo ? resolveImagePath(project.data.video) : null;
 
 <Layout title={title}>
   <section class="py-12 max-w-6xl mx-auto px-6 lg:px-12 relative z-10">
-    <BlogHeader 
-      title={project.data.title}
-    />
+    <BlogHeader title={project.data.title} />
     <div class="py-8 px-6 bg-gray-950 rounded-lg border border-gray-800 mb-8">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         <div class="relative mb-8 md:mb-0">
-          {hasVideo ? (
-            <video 
-              src={videoSrc}
-              controls
-              class="w-full object-cover rounded-lg border border-gray-800"
-            >
-              Your browser does not support the video tag.
-            </video>
-          ) : (
-            <img 
-              src={resolvedImage} 
-              alt={project.data.title} 
-              class="w-full object-cover rounded-lg border border-gray-800" 
-            />
-          )}
+          {
+            hasVideo ? (
+              <video
+                src={videoSrc}
+                controls
+                class="w-full object-cover rounded-lg border border-gray-800"
+              >
+                Your browser does not support the video tag.
+              </video>
+            ) : (
+              <img
+                src={resolvedImage}
+                alt={project.data.title}
+                class="w-full object-cover rounded-lg border border-gray-800"
+              />
+            )
+          }
+
+          <p class="my-4 text-gray-200">{project.data.description}</p>
+          <div class="flex gap-4 mb-4 text-center justify-center">
+            {
+              project.data.links.map((link: any) => (
+                <a
+                  href={link.href}
+                  target="_blank"
+                  class="text-gray-400 hover:text-green-400 transition-colors"
+                  onclick="event.stopPropagation()"
+                >
+                  <Icon name={link.icon} className="text-xl" />
+                </a>
+              ))
+            }
+          </div>
         </div>
         <div>
-          <div class="mb-4 text-gray-200">{project.data.description}</div>
-          <div class="flex gap-4 mb-4 text-center justify-center">
-            {project.data.links.map((link: any) => (
-              <a href={link.href}
-                target="_blank"
-                class="text-gray-400 hover:text-green-400 transition-colors"
-                onclick="event.stopPropagation()">
-                <Icon name={link.icon} className="text-xl" />
-              </a>
-            ))}
-          </div>
           <div class="post-content text-gray-400 space-y-8">
             <Content />
           </div>
           <div class="flex flex-wrap gap-2 mt-4">
-            {project.data.tags.map((tag: string) => (
-              <span
-                class="px-2 py-1 bg-gray-700/20 text-gray-300 rounded-full text-sm"
-              >
-                {tag}
-              </span>
-            ))}
+            {
+              project.data.tags.map((tag: string) => (
+                <span class="px-2 py-1 bg-gray-700/20 text-gray-300 rounded-full text-sm">
+                  {tag}
+                </span>
+              ))
+            }
           </div>
         </div>
       </div>
     </div>
 
     <!-- Gallery Section -->
-    {resolvedGallery && resolvedGallery.length > 0 && (
-      <div class="py-8 px-6 bg-gray-950 rounded-lg border border-gray-800 mb-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {resolvedGallery.map((image: string, index: number) => (
-            <a href={image}
-              class="glightbox"
-              data-gallery={resolvedGallery}
-              data-glightbox={`title: ${project.data.title}; description: ${project.data.description}`}>
-              <img 
-                src={image} 
-                alt={`${project.data.title} - Image ${index + 1}`}
-                class="w-full h-48 object-cover rounded-lg border border-gray-800 hover:border-green-400 transition-colors"
-              />
-            </a>
-          ))}
+    {
+      resolvedGallery && resolvedGallery.length > 0 && (
+        <div class="py-8 px-6 bg-gray-950 rounded-lg border border-gray-800 mb-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {resolvedGallery.map((image: string, index: number) => (
+              <a
+                href={image}
+                class="glightbox"
+                data-gallery={resolvedGallery}
+                data-glightbox={`title: ${project.data.title}; description: ${project.data.description}`}
+              >
+                <img
+                  src={image}
+                  alt={`${project.data.title} - Image ${index + 1}`}
+                  class="w-full h-48 object-cover rounded-lg border border-gray-800 hover:border-green-400 transition-colors"
+                />
+              </a>
+            ))}
+          </div>
         </div>
-      </div>
-    )}
+      )
+    }
   </section>
 </Layout>
