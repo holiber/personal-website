@@ -41,12 +41,16 @@ const videoSrc = hasVideo ? resolveImagePath(project.data.video) : null;
 
 <Layout title={title}>
   <section class="py-12 max-w-6xl mx-auto px-6 lg:px-12 relative z-10">
+    <!-- Project Header -->
     <BlogHeader title={project.data.title} />
+    
+    <!-- Main Project Content Card -->
     <div class="py-8 px-6 bg-gray-950 rounded-lg border border-gray-800 mb-8">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-
-        <!-- {JSON.stringify(project.data)} -->
+        
+        <!-- Left Column: Media & Quick Info -->
         <div class="relative mb-8 md:mb-0">
+          <!-- Project Media (Video or Image) -->
           {
             hasVideo ? (
               <video
@@ -67,7 +71,10 @@ const videoSrc = hasVideo ? resolveImagePath(project.data.video) : null;
             )
           }
 
+          <!-- Project Description -->
           <p class="my-4 text-gray-200">{project.data.description}</p>
+          
+          <!-- Project Links (GitHub, Live Demo, etc.) -->
           <div class="flex gap-4 mb-4 text-center justify-center">
             {
               project.data.links.map((link: any) => (
@@ -83,10 +90,15 @@ const videoSrc = hasVideo ? resolveImagePath(project.data.video) : null;
             }
           </div>
         </div>
+        
+        <!-- Right Column: Detailed Content -->
         <div>
+          <!-- MDX Content (Project Details, Features, etc.) -->
           <div class="post-content text-gray-400 space-y-8">
             <Content />
           </div>
+          
+          <!-- Project Tags -->
           <div class="flex flex-wrap gap-2 mt-4">
             {
               project.data.tags.map((tag: string) => (
@@ -100,12 +112,14 @@ const videoSrc = hasVideo ? resolveImagePath(project.data.video) : null;
       </div>
     </div>
 
-    <!-- Gallery Section -->
+    <!-- Gallery Section (Optional) -->
     {
       resolvedGallery && resolvedGallery.length > 0 && (
         <div class="py-8 px-6 bg-gray-950 rounded-lg border border-gray-800 mb-8">
+          <!-- Gallery Grid -->
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {resolvedGallery.map((image: string, index: number) => (
+              <!-- Gallery Image with Lightbox -->
               <a
                 href={image}
                 class="glightbox"
